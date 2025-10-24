@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Birthday, Lolove 🎉</title>
+  <link rel="icon" href="images/fav.png">
+  <style>
+    :root {
+      --bg: #dbbcfc;
+      --accent: #6c09dc;
+      --accent2: ##ab66f9;
+      --text: #333;
+    }
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body {
+      font-family: "Poppins", sans-serif;
+      background-image: url(images/bg.jpeg);
+      background-size: cover;
+      background-position: center;
+      height: 100%;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+    .page {
+      display: none;
+      min-height: 100vh;
+      padding: 70px 20px;
+      text-align: center;
+    }
+    .page.active { display: block; }
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .secondary {
+      background: white;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+    }
+    h1, h2 { 
+        margin-bottom: 12px; 
+    }
+
+    .cake {
+      position: relative;
+      width: 200px;
+      margin: 40px auto;
+    }
+    .layer {
+      height: 30px;
+      background: #ab66f9;
+      border-radius: 8px;
+      margin-bottom: 5px;
+    }
+    .layer.top { height: 40px; background: var(--accent); }
+    .frosting {
+      position: absolute;
+      left: 15px; right: 15px;
+      height: 12px;
+      background: white;
+      top: 35px;
+      border-radius: 20px;
+    }
+    .candle {
+      position: absolute;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 30px;
+      background: #ffe082;
+      border-radius: 3px;
+    }
+    .flame {
+      position: absolute;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff2cc, #ffd36b, #ff7a00);
+      animation: flicker 1s infinite;
+    }
+    @keyframes flicker {
+      0%,100% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(0.9); }
+    }
+
+    .letter-box {
+      background: #bd85fa;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      max-width: 90%;
+      margin: 0 auto;
+      display: none;
+    }
+    .letter-box.open { display: block; }
+
+    .frames-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px,1fr));
+      gap: 10px;
+      margin-top: 20px;
+      border: 5px solid var(--accent);
+      border-radius: 16px;
+      padding: 10px;
+      background: repeating-linear-gradient(
+        45deg,
+        #ab66f9,
+        #ab66f9 10px,
+        #c595fb 10px,
+        #c595fb 20px
+      );
+    }
+    .frames-grid img {
+      width: 100%;
+      border-radius: 10px;
+      border: 3px solid var(--accent);
+      object-fit: cover;
+    }
+
+    .slideshow {
+      position: relative;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+    .slide { display: none; }
+    .slide.active { display: block; }
+    .slide img {
+      width: 100%;
+      border-radius: 10px;
+      border: 4px solid var(--accent);
+    }
+    .nav-slides {
+      margin-top: 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .happy {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 900;
+      letter-spacing: 3px;
+      padding: 40px 20px;
+      margin: 0 auto;
+      text-transform: uppercase;
+
+      background: linear-gradient(90deg, #c084fc, #d8b4fe, #f5d0fe);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+
+      text-shadow:
+        1px 1px 0 #b26bfa,
+        2px 2px 0 #a855f7,
+        3px 3px 0 #9333ea,
+        4px 4px 0 #7e22ce,
+        5px 5px 10px rgba(147, 51, 234, 0.4);
+
+      border-radius: 20px;
+      display: inline-block;
+      transition: transform 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .happy:hover {
+      transform: scale(1.08);
+      text-shadow:
+        1px 1px 0 #f0abfc,
+        2px 2px 0 #e879f9,
+        3px 3px 0 #d946ef,
+        4px 4px 10px rgba(217, 70, 239, 0.6),
+        0 0 20px rgba(236, 72, 153, 0.8);
+    }
+
+  canvas#confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 1;
+    pointer-events: none;
+  }
+  </style>
+</head>
+<body>
+
+  <div id="page-intro" class="page active">
+    <h1>Hello, Lolovee! 💜</h1>
+    <p>Click mo po yung sa baba to start your birthday journey po hehe</p>
+    <img src="images/intro_lg.png" style="width: 80%; height: 80%; object-fit: cover;">
+    <button id="btn-to-cake">Start Celebration</button>
+  </div>
+
+  <div id="page-cake" class="page">
+    <h2>Blow the Candle & Make a Wish</h2>
+    <div class="cake">
+      <div class="layer top"></div>
+      <div class="frosting"></div>
+      <div class="layer"></div>
+      <div class="layer"></div>
+      <div class="candle"><div class="flame"></div></div>
+    </div>
+    <button id="btn-wish">Make a Wish ✨</button>
+    <button id="btn-to-letter" class="secondary">Next</button>
+  </div>
+
+  <div id="page-letter" class="page">
+    <h2>From the Heart 💌</h2>
+    <button id="btn-heart">❤</button>
+    <div id="letterBox" class="letter-box">
+      <h3>Dear My Baby Lyza,</h3>
+      <p>Happy Birthday and Happy Monthsary po my loloveee, Thankyouu po for everything anything anyelse anywhere any any hehehe I super appreciated of all those kind of loving me thankyouusomuchh po sa walang sawang pagmamahal sakin at pagiintindi at iba pa, Pasensya na po if nakukulangan ka sa love and effort na binibigay ko sayo and tuwing di us natutuloy sa pag date natin I'm very sorry po I hope you understand it namnn po cause valid namn po tlaga reasons ko sayo and hindi ako naglilie it's true namnn po kaya pasensya na po but I make bawi bawi namnn to youu ihh as long as makakaya ko ginagawa ko namn po for you even if you don't know na nageeffort namn po me tlaga sayo and ginagawa ang lahat but if kulang padin yun I'm sorry po I will make improve namn ehh and trying my best always because you're very important to me ayaw kong mawala ka sa tabi ko want ko nandyan lng ako sayo, I'm so veryy attach na sayo kaya if mawawala ka sakin sobrang mahihirapan me at babalik balik padin sayo tatawag tawagin ang iyong name always everyday, everymorning, everyafternoon and everynight my Lovee because, I love youu so muchh in not words lng kundi in my pure heart and pure intentions to youu, I give a genuine love for youu, and lagi mo pong tatandaan if every man wala ako sayo sa tabi mo iisipin mo palagi akong na sayo my presence is in your side and lalo na si Lord kasama natin sa buhay sa pagangat nating dalawa, always God center in your life po and sa ating relationship lagi mo syang uunahin and kalimutan mo na ang lahat wag lng si Lord cause lagi syang na sayo and hindi ka nya pinapabayaan and mahal na mahal ka nya and syempre mahal na mahal po din kita that's why I always praying to you for your life, family, acads, guideness, protection, and mga struggle mo sa life, remember to pray always and don't lose hope even mga daming challenges  sa life just Be strong and courageous. Do not be afraid do not be discouraged, for the LORD your God will be with you wherever you go. always rember that po ahh and I am always you din po ready makinig and icomfort ang babyy ko nayarn na cutieee cutieee isang pa cutee facee nga dyan maging kamukha mo si stuff toys dogieee HAHAHAHHA eme, and yun po lolovee  obrang saya ko na ikaw ang nakasama ko sa life na to, sayo ko natutunan kung ano yung totoong kilig yung tipong kahit simpleng chat mo lang automatic smile na ako HAHAHAHAHA yun po loloveee again I'm proud of youu always and supporting you always nandito lng ako your top 1 fan and your best partner ever proud ako sayo gawa ng maraming kang taong nahehelp and may malasakit sa kapwa you're the best tlaga everrr, I love youuuu sooo muchhhh po my Loloveeeeee ko mwaaaa😘.
+</p>
+      <p><em>— With all my pure love ❤️</em></p>
+    </div>
+    <button id="btn-to-frames" class="secondary">Next</button>
+  </div>
+
+  <div id="page-frames" class="page">
+    <h2>Our Memories Pic  </h2>
+    <div class="frames-grid" id="framesGrid"></div>
+    <audio id="framesMusic" loop play>
+      <source src="audio/mem_bgm.mp3" type="audio/mp3">
+    </audio>
+    <button id="btn-to-slideshow" class="secondary">Next</button>
+  </div>
+
+  <div id="page-slideshow" class="page">
+    <h2>Our Journey Together 💜</h2>
+    <div class="slideshow" id="slideshow"></div>
+    <div class="nav-slides">
+      <button id="btn-prev-slide" class="secondary"></button>
+      <button id="btn-next-slide" class="secondary"></button>
+    </div>
+    <audio id="bgMusic" loop play>
+      <source src="audio/slide_bgm.mp3" type="audio/mp3">
+    </audio>
+    <audio id="voiceover">
+      <source src="audio/mgg.mp3" type="audio/mp3">
+    </audio>
+    <button id="btn-to-ending" class="secondary">Next</button>
+  </div>
+
+  <div id="page-ending" class="page">
+    <div class="happy">HAPPY BIRTHDAY <br> HAPPY MONTHSARY LOLOVEE <br> I love youu po💜💜</div>
+    <canvas id="confetti"></canvas>
+    <button id="btn-celebrate">Celebrate 🎊</button>
+  </div>
+
+  <script>
+    const pages = ["intro","cake","letter","frames","slideshow","ending"];
+    const show = (key) => {
+      pages.forEach(p => document.getElementById(`page-${p}`).classList.remove("active"));
+      document.getElementById(`page-${key}`).classList.add("active");
+      window.scrollTo({top:0,behavior:"smooth"});
+    };
+    document.getElementById("btn-to-cake").onclick=()=>show("cake");
+    document.getElementById("btn-to-letter").onclick=()=>show("letter");
+    document.getElementById("btn-to-frames").onclick=()=>show("frames");
+    document.getElementById("btn-to-slideshow").onclick=()=>show("slideshow");
+    document.getElementById("btn-to-ending").onclick=()=>show("ending");
+
+    document.getElementById('btn-wish').onclick = () => {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const notes = [392,392,440,392,523,494];
+      let t = ctx.currentTime;
+      notes.forEach((f,i)=>{
+        const o=ctx.createOscillator(),g=ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.type='sine'; o.frequency.value=f; g.gain.value=0.1;
+        o.start(t+i*0.3); o.stop(t+i*0.3+0.25);
+      });
+      document.querySelector('.flame').style.opacity=0;
+      setTimeout(()=>document.querySelector('.flame').style.opacity=1,2000);
+    };
+
+      document.getElementById('btn-heart').onclick = () => {
+        const box = document.getElementById('letterBox');
+        box.classList.toggle('open');
+
+        let letterMusic = document.getElementById('letterMusic');
+        if (!letterMusic) {
+          letterMusic = document.createElement('audio');
+          letterMusic.id = 'letterMusic';
+          letterMusic.src = 'audio/ms_bgm.mp3'; 
+          letterMusic.loop = true; 
+          letterMusic.volume = 0.6;
+          document.body.appendChild(letterMusic);
+        }
+
+        if (box.classList.contains('open')) {
+          letterMusic.currentTime = 0;
+          letterMusic.play().catch(() => {
+            console.log('Autoplay blocked — user interaction required');
+          });
+        } else {
+
+          letterMusic.pause();
+        }
+      };
+
+
+    const framesGrid = document.getElementById('framesGrid');
+
+framesGrid.style.display = "flex";
+framesGrid.style.flexDirection = "column";
+framesGrid.style.alignItems = "center";
+framesGrid.style.overflowY = "auto";
+framesGrid.style.maxHeight = "80vh";
+framesGrid.style.padding = "10px";
+framesGrid.style.border = "5px solid #6c09dc";
+framesGrid.style.borderRadius = "15px";
+framesGrid.style.background = "linear-gradient(180deg, #fff0f3, #ffe6ea)";
+framesGrid.style.scrollBehavior = "smooth";
+
+const imageList = [
+  "images/mem_p1.jpg",
+  "images/mem_p2.jpg",
+  "images/mem_p3.jpg",
+  "images/mem_p4.jpg",
+  "images/mem_p5.jpg",
+  "images/mem_p6.jpg",
+  "images/mem_p7.jpg",
+  "images/mem_p8.jpeg",
+  "images/mem_p9.jpeg",
+  "images/mem_p10.jpeg",
+  "images/mem_p11.jpeg",
+  "images/mem_p12.jpeg",
+  "images/mem_p13.jpeg",
+  "images/mem_p14.jpg"
+];
+
+imageList.forEach(src => {
+  const img = document.createElement("img");
+  img.src = src;
+  img.alt = "Memory Photo";
+  img.style.width = "90%";
+  img.style.maxWidth = "350px";
+  img.style.margin = "10px 0";
+  img.style.objectFit = "cover";
+  img.style.borderRadius = "15px";
+  img.style.border = "4px solid #6c09dc";
+  img.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
+  framesGrid.appendChild(img);
+});
+
+
+    const slideContainer = document.getElementById('slideshow');
+    let slides = [];
+
+    for (let i = 1; i <= 19; i++) {
+    const div = document.createElement('div');
+    div.className = 'slide';
+    const img = document.createElement('img');
+    img.src = `images/togeth_p${i}.jpg`; 
+    div.appendChild(img);
+    slideContainer.appendChild(div);
+    slides.push(div);
+    }
+
+    let slideIndex=0;
+    slides[0].classList.add('active');
+    const nextSlide=()=>{
+      slides[slideIndex].classList.remove('active');
+      slideIndex=(slideIndex+1)%slides.length;
+      slides[slideIndex].classList.add('active');
+    };
+    document.getElementById('btn-next-slide').onclick=nextSlide;
+    document.getElementById('btn-prev-slide').onclick=()=>{
+      slides[slideIndex].classList.remove('active');
+      slideIndex=(slideIndex-1+slides.length)%slides.length;
+      slides[slideIndex].classList.add('active');
+    };
+    setInterval(nextSlide,10000);
+
+    const framesMusic = document.getElementById("framesMusic");
+    const bgMusic = document.getElementById("bgMusic");
+    const voiceover = document.getElementById("voiceover");
+
+    document.getElementById("btn-to-cake").onclick = () => show("cake");
+    document.getElementById("btn-to-letter").onclick = () => show("letter");
+
+    document.getElementById("btn-to-frames").onclick = () => {
+      show("frames");
+      framesMusic.currentTime = 0;
+      framesMusic.volume = 0.5;
+      framesMusic.play().catch(() => console.log("Autoplay blocked"));
+    };
+
+    document.getElementById("btn-to-slideshow").onclick = () => {
+      show("slideshow");
+
+      framesMusic.pause();
+
+      bgMusic.currentTime = 0;
+      bgMusic.volume = 0.1;
+      bgMusic.play().catch(() => console.log("Autoplay blocked"));
+
+      voiceover.currentTime = 0;
+      voiceover.volume = 1.0;
+      voiceover.play().catch(() => console.log("Voiceover autoplay blocked"));
+    };
+
+    document.getElementById("btn-to-ending").onclick = () => {
+      show("ending");
+      bgMusic.pause();
+      voiceover.pause();
+    };
+
+const confCanvas = document.getElementById('confetti');
+const ctx2 = confCanvas.getContext('2d');
+confCanvas.width = window.innerWidth;
+confCanvas.height = 300;
+
+function randColor() {
+  return `hsl(${Math.random() * 360}, 80%, 60%)`;
+}
+
+function runConfetti() {
+  const pieces = [];
+  const balloons = [];
+  const sprinkles = [];
+  const heart = [];
+
+  for (let i = 0; i < 150; i++) {
+    pieces.push({
+      x: Math.random() * confCanvas.width,
+      y: Math.random() * confCanvas.height,
+      r: Math.random() * 6 + 4,
+      vy: Math.random() * 3 + 2,
+      color: randColor(),
+    });
+  }
+
+  for (let i = 0; i < 12; i++) {
+    balloons.push({
+      x: Math.random() * confCanvas.width,
+      y: confCanvas.height + Math.random() * 100,
+      size: 30 + Math.random() * 20,
+      color: randColor(),
+      vy: 1 + Math.random() * 1.5,
+    });
+  }
+
+  for (let i = 0; i < 100; i++) {
+    sprinkles.push({
+      x: Math.random() * confCanvas.width,
+      y: Math.random() * confCanvas.height,
+      w: 3,
+      h: 10,
+      color: randColor(),
+      vy: 2 + Math.random() * 3,
+      rot: Math.random() * Math.PI * 2,
+    });
+  }
+
+  const boom = document.createElement('div');
+  boom.style.position = 'fixed';
+  boom.style.top = 0;
+  boom.style.left = 0;
+  boom.style.width = '100vw';
+  boom.style.height = '100vh';
+  boom.style.background = 'radial-gradient(circle, rgba(255,255,255,0.9), transparent)';
+  boom.style.opacity = 0;
+  boom.style.transition = 'opacity 0.6s ease';
+  boom.style.pointerEvents = 'none';
+  document.body.appendChild(boom);
+
+  const boomSound = new Audio('audio/boom_bgm.mp3');
+  boomSound.volume = 0.5;
+
+  boomSound.play().catch(() => {});
+  boom.style.opacity = 1;
+  setTimeout(() => (boom.style.opacity = 0), 600);
+  setTimeout(() => boom.remove(), 1500);
+
+  function animate() {
+    ctx2.clearRect(0, 0, confCanvas.width, confCanvas.height);
+
+    pieces.forEach(p => {
+      ctx2.beginPath();
+      ctx2.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx2.fillStyle = p.color;
+      ctx2.fill();
+      p.y += p.vy;
+      if (p.y > confCanvas.height) p.y = -10;
+    });
+
+    balloons.forEach(b => {
+      ctx2.beginPath();
+      ctx2.ellipse(b.x, b.y, b.size * 0.7, b.size, 0, 0, Math.PI * 2);
+      ctx2.fillStyle = b.color;
+      ctx2.fill();
+      ctx2.beginPath();
+      ctx2.moveTo(b.x, b.y + b.size);
+      ctx2.lineTo(b.x, b.y + b.size + 25);
+      ctx2.strokeStyle = '#aaa';
+      ctx2.stroke();
+      b.y -= b.vy;
+      if (b.y + b.size < 0) b.y = confCanvas.height + 100;
+    });
+
+    sprinkles.forEach(s => {
+      ctx2.save();
+      ctx2.translate(s.x, s.y);
+      ctx2.rotate(s.rot);
+      ctx2.fillStyle = s.color;
+      ctx2.fillRect(-s.w / 2, -s.h / 2, s.w, s.h);
+      ctx2.restore();
+      s.y += s.vy;
+      if (s.y > confCanvas.height) s.y = -20;
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+}
+
+document.getElementById('btn-celebrate').onclick = runConfetti;
+
+  </script>
+</body>
+</html>
